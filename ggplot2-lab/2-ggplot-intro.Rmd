@@ -42,7 +42,7 @@ For this first chart, let's make a bar chart.
 
 We'll start by getting our data ready.
 ```{r}
-bar_chart_data <- data %>% filter(year == 2017) %>% top_n(10, n)
+bar_chart_data <- data %>% filter(year == 1993) %>% top_n(10, n)
 ```
 
 Now we want to make a plot.
@@ -166,7 +166,7 @@ Now you try: With a buddy, make your own super awesome bar chart
  
 First, we want to get the 10 girls' names.
 ```{r}
-line_chart_data <- data %>% filter(sex == "F" & name %in% c("Olive", "Betty", "Madison", "Nevaeh", "Stephanie"))
+line_chart_data <- data %>% filter(sex == "F" & name %in% c("Guadalupe", "Adriana", "Nina", "Susana", "Luz"))
 
 View(line_chart_data)
 ```

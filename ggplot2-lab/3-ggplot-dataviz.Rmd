@@ -203,7 +203,31 @@ Time to work on your own! Use the spotify data and the code we reviewed above to
 
 1.Make a bar chart of the top 10 tracks, similar to the chart we made above. Instead of the track name, show the artist name. Write new headline and chatter and change the color and theme. /OR/ Think of your own idea for a bar chart using the spotify data.
 
+```{r}
+pt2_spotify_bar_chart_data <- spotify_data %>% top_n(10, streams)
+
+spotify_bar_chart_data %>% ggplot(aes(x = reorder(artist.s._name,desc(streams)), y = streams)) +
+  geom_col(fill="green")+
+  scale_y_continuous(labels = scales::label_number(scale = 1e-9, suffix = "B")) +
+  scale_x_discrete(guide = guide_axis(angle = 45)) +
+  labs(title = "Living for The Weeknd", subtitle = "Songs by The Weeknd appeared twice in 2023's top streamed songs on Spotify. \nBlinding Lights took the top spot with over 3 billion streams, and Starboy ft. Daft Punk \ncame in at number 10 with over 2.5 billion streams.", caption = "Source: Spotify via Kaggle \n by April Quevedo")+
+  theme_minimal()+
+  theme(axis.title = element_blank())
+
+```
+
+
 2. Make a scatterplot simiar to the chart we made above. Instead of energy and danceability, choose two different metrics from the data to compare. Write new text and update the colors and theme.
+
+```{r}
+ ggplot(spotify_data, aes(acousticness_., liveness_., color = key)) +
+        geom_point(alpha = .5, aes(size = speechiness_.))+
+    theme_minimal() +
+    scale_color_brewer(palette="Paired") +
+    labs(title = "Are acousticness and liveness related?", subtitle = "Examining the top Spotify songs of 2023", caption = "Source: Spotify via Kaggle \n by April Quevedo", x = "Acousticness", y = "Liveness", size = "Speechiness", color = "Key")
+
+```
+
 
 3. Make another chart using this data, anything you like.
 
