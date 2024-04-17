@@ -224,12 +224,24 @@ spotify_bar_chart_data %>% ggplot(aes(x = reorder(artist.s._name,desc(streams)),
         geom_point(alpha = .5, aes(size = speechiness_.))+
     theme_minimal() +
     scale_color_brewer(palette="Paired") +
-    labs(title = "Are acousticness and liveness related?", subtitle = "Examining the top Spotify songs of 2023", caption = "Source: Spotify via Kaggle \n by April Quevedo", x = "Acousticness", y = "Liveness", size = "Speechiness", color = "Key")
+    labs(title = "Are acousticness and liveness related?", subtitle = "Adam, I won't lie...I have no idea what this is telling me. No?", caption = "Source: Spotify via Kaggle \n by April Quevedo", x = "Acousticness", y = "Liveness", size = "Speechiness", color = "Key")
 
 ```
 
 
 3. Make another chart using this data, anything you like.
+
+```{r}
+pt2_spotify_area_data <- spotify_data |> group_by(mode) |> summarize(total_songs = n())
+```
+
+```{r}
+pt2_spotify_area_data %>% ggplot(aes(x = mode, y = total_songs)) +
+  geom_col(fill = "blue") +
+  labs(title = "Mode of Top Spotify Tracks of 2023", subtitle = "More songs were in major key than minor key.", caption = "Source: Spotify via Kaggle \n by April Quevedo")+
+  theme_minimal()+
+  theme(axis.title = element_blank())
+```
 
 
 When finished, save and submit this R Markdown file to ELMS.
