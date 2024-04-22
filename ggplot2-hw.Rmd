@@ -1,0 +1,96 @@
+---
+title: "dataviz-ggplot"
+output: html_document
+date: "2024-04-22"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages("treemapify")
+install.packages("RColorBrewer")
+install.packages('svglite')
+```
+
+```{r}
+library(tidyverse)
+library(scales)
+library(treemapify)
+library(RColorBrewer)
+library(svglite)
+```
+
+```{r}
+mcr_vampiremoney <- read.csv("mcr_reunion_tour_r.csv")
+#  group_by(State) |> summarize(Revenue)
+#Create data frame
+mcr_vampiremoney <- tibble(
+  State = c("CA", "CA", "CO", "CT", "FL", "GA", "MA", "MI", "MN", "NC", 
+            "NJ", "NV", "NY", "NY", "NY", "NY", "OH", "OK", "OR", "PA", 
+            "TN", "TX", "TX", "TX", "WA"),
+  Revenue = c("$2,312,402.00", "$9,379,280.00", "$2,303,500.00", "$947,219.00", 
+              "$2,186,088.00", "$1,368,605.00", "$3,875,419.00", "$2,570,993.00", 
+              "$2,323,892.00", "$2,482,991.00", "$3,756,499.00", "$2,671,341.00", 
+              "$1,364,591.00", "$997,090.00", "$1,445,376.00", "$2,955,027.00", 
+              "$1,652,303.00", "$1,963,336.00", "$1,776,165.00", "$2,769,425.00", 
+              "$2,057,097.00", "$2,087,747.00", "$1,802,648.00", "$3,184,604.00", 
+              "$2,351,736.00")
+)
+
+#Clean Revenue column and convert to numeric
+mcr_vampiremoney <- mcr_vampiremoney %>%
+  mutate(Revenue = parse_number(Revenue))
+
+#Sum the revenue for each state
+mcr_vmoneysum <- mcr_vampiremoney %>%
+  group_by(State) %>%
+  summarise(Total_Revenue = sum(Revenue))
+
+#Print result
+print(mcr_vmoneysum)
+
+```
+
+
+```{r}
+mcr_vmoneysum %>% ggplot(aes(x = State, y = Total_Revenue)) +
+  geom_col() +
+  geom_col(fill="darkred")+
+  scale_y_continuous(labels = scales::label_number(scale = 1e-06, suffix = "M")) +
+  scale_x_discrete(guide = guide_axis(angle = 45)) + 
+  labs(title = "'Gimme that vampire money, c'mon!'", subtitle = "After a six-year hiatus, My Chemical Romance's U.S. leg of their 2022 reunion tour \ncollected over $60 million in ticket sales.Here's the breakdown of gross revenue by state.", caption = "Source: Touring Data \n by April Quevedo")+
+  theme_minimal()+
+  theme(axis.title = element_blank())
+
+```
+
+```{r}
+mcr_vampiremoney <- read.csv("mcr_reunion_tour_r.csv")
+
+mcr_area <- mcr_vampiremoney |>
+  group_by(State) |>
+  summarize(count_by_state = n())
+```
+
+```{r}
+ggplot(mcr_area, aes(area = count_by_state, fill = State)) +
+  geom_treemap() +
+      theme_minimal() +
+  geom_treemap_text(grow = TRUE, reflow = TRUE,
+                    aes(label = sprintf("%s\n(%s)", State, format(count_by_state, big.mark = ","))),
+                    colour = "white", place = "bottomright", size = 1) +
+      scale_fill_manual(values = c("CA" = "#060102", "TX" = "#2e0a0f", "NY" = "#861d2c", "FL" = "#491018", "CO" = "#5d141f", "CT" = "#711825", "GA" = "#861d2c", "MA" = "#9a2133", "MI" = "#ae2539", "MN" = "#c22a40", "NC" = "#d23249", "NJ" = "#d6465b", "NV" = "#d95467", "OH" = "#df6e7f", "OK" = "#e48291", "OR" = "#eba4ae", "PA" = "#efb8c0", "TN" = "#f4ccd2", "WA" = "#f6dade" )) +
+   labs(title = "Black Parade Stops", subtitle = "Stops along the U.S. leg of the MCR Reunion tour", caption = "Source: Touring Data \n by April Quevedo", color = "State")
+```
+
+```{r}
+mcr_vampiremoney <- read.csv("mcr_reunion_tour_r.csv")
+```
+
+```{r}
+
+```
+
+
