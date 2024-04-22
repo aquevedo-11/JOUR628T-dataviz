@@ -20,7 +20,10 @@ library(scales)
 library(treemapify)
 library(RColorBrewer)
 library(svglite)
+library(ggplot2)
+library(lubridate)
 ```
+
 
 ```{r}
 mcr_vampiremoney <- read.csv("mcr_reunion_tour_r.csv")
@@ -52,7 +55,6 @@ mcr_vmoneysum <- mcr_vampiremoney %>%
 print(mcr_vmoneysum)
 
 ```
-
 
 ```{r}
 mcr_vmoneysum %>% ggplot(aes(x = State, y = Total_Revenue)) +
@@ -90,7 +92,20 @@ mcr_vampiremoney <- read.csv("mcr_reunion_tour_r.csv")
 ```
 
 ```{r}
+mcr_line <- mcr_vampiremoney |>
+  group_by(M_Y) |>
+  summarize(count_by_my = n())
+```
 
+
+```{r}
+ggplot(mcr_line, aes(x=M_Y, y=count_by_my)) + 
+  geom_line() +
+  geom_point() +
+  labs(title="Shows over time", 
+       subtitle="MCR's tour kicked off in August and ended in October of 2022.", 
+       caption="Source: Touring Data \n by April Quevedo", 
+       y="# of shows", x="month and year")
 ```
 
 
